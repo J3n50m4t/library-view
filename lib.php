@@ -1,4 +1,6 @@
 <?php
+// Global Vars
+$librarypath =  $argv[1];
 checkarguments($argv);
 function checkarguments($argv)
 {
@@ -7,35 +9,55 @@ function checkarguments($argv)
     }
     else{
         $librarypath = $argv[1];
+        generateHTMLCore();
         scandirectory($librarypath);
     }
+    generateHTMLEnding();
 }
 
 function scandirectory($librarypath)
 {
 $files = array_diff(scandir($librarypath), array('..', '.'));;
-    generateHTMLCore();
-generatefiles($files);
-generateHTMLEnding();
-}
+    generatefiles($files);
 
+}
+function resultisDirectory($result){
+    $container = '
+    </div>
+    </div>
+    </div>
+        <div class="section" id="account">
+            <div class="container">
+                <div class="row">
+                <h1>'. $result .' </h1>
+    ';      
+    
+    file_put_contents ( 'index.html', $container, FILE_APPEND);
+    $newPath = $GLOBALS['librarypath']  . $result;
+    echo $newPath;
+    scandirectory($newPath);
+}
+function resultisFile($result){
+    $container = '
+    <div class="col-sm-3">
+        <h1>'. $result .' </h1>
+        <p> Es handelt sich um eine Datei </p>
+    </div>';      
+    
+    file_put_contents ( 'index.html', $container, FILE_APPEND);
+}
 function generatefiles($files){
     foreach ($files as $value) {
         $isdirectory = is_dir($value);
         if($isdirectory == 1){
-            $isdirectory = "It is a directory.";
+            resultisDirectory($value);
         }
         else{
-            $isdirectory = "It is a file.";
+            resultisFile($value);
         }
-        $container = '
-        <div class="col-md-6">
-            <h1>'. $value .' </h1>
-            <p>' . $isdirectory . ' </p>
-        </div>';      
-        
-        file_put_contents ( 'index.html', $container, FILE_APPEND);
+       
     }
+ 
 }
 
 
@@ -100,20 +122,20 @@ file_put_contents ( 'index.html', '
 <footer class="section section-primary">
     <div class="container">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-3">
                 <h1>MediaLib</h1>
                 <p>All infos got scanned and are shown above.
                     <br><br>
                 </p>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-3">
                 <p class="text-info text-right">
                     <br>
                     <br>
                 </p>
                 <div class="row">
                     <div class="col-md-12 hidden-xs text-right">
-                        <a href="https://github.com/J3n50m4t/ethereum-cert-signer-php" target="_blank"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+                        <a href="   " target="_blank"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
                         <a href="#top"><i class="fa fa-3x fa-fw fa-arrow-up text-inverse"></i></a>
                     </div>
                 </div>
