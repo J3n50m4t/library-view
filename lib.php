@@ -8,9 +8,8 @@ function checkarguments($argv)
         echo "Failed! Add a path as argument";
     }
     else{
-        $librarypath = $argv[1];
         generateHTMLCore();
-        scandirectory($librarypath);
+        scandirectory($GLOBALS['librarypath']);
     }
     generateHTMLEnding();
 }
