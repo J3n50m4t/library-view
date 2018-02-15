@@ -134,7 +134,7 @@ file_put_contents ( 'index.html', '
                 </p>
                 <div class="row">
                     <div class="col-md-12 hidden-xs text-right">
-                        <a href="   " target="_blank"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+                        <a href="https://github.com/J3n50m4t/library-view" target="_blank"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
                         <a href="#top"><i class="fa fa-3x fa-fw fa-arrow-up text-inverse"></i></a>
                     </div>
                 </div>
