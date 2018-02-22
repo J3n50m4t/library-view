@@ -9,23 +9,23 @@ function checkarguments($argv)
     }
     else{
         generateHTMLCore();
-        scandirectory($GLOBALS['librarypath']);
+        $librarypath =  $argv[1];
+        scandirectory($librarypath);
     }
     generateHTMLEnding();
 }
 
 function scandirectory($librarypath)
 {
-$files = array_diff(scandir($librarypath), array('..', '.'));;
+    $files = filelist($librarypath);
     generatefiles($files);
-
+    $directory = dir_list($librarypath);
+    generatefiles($directory);
 }
 function resultisDirectory($result){
     $container = '
-    </div>
-    </div>
-    </div>
-        <div class="section" id="account">
+    </div></div></div>
+        <div class="section" id="'. $result . '">
             <div class="container">
                 <div class="row">
                 <h1>'. $result .' </h1>
@@ -59,6 +59,14 @@ function generatefiles($files){
  
 }
 
+function filelist($d){
+    foreach(array_diff(scandir($d),array('.','..')) as $f)if(is_file($d.'/'.$f))$l[]=$f; 
+       return $f; 
+}
+function dir_list($d){ 
+    foreach(array_diff(scandir($d),array('.','..')) as $f)if(is_dir($d.'/'.$f))$l[]=$f; 
+    return $f; 
+} 
 
 function generateHTMLCore(){
     file_put_contents ( 'index.html', '
@@ -106,7 +114,7 @@ function generateHTMLCore(){
             </div>
         </div>
     </div>
-    <div class="section" id="account">
+    <div class="section" id="Files">
         <div class="container">
             <div class="row">
     ');
