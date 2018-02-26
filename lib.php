@@ -19,24 +19,27 @@ function scandirectory($librarypath)
 {
     $files = filelist($librarypath);
     var_dump($files);
+    file_put_contents ( 'index.html', '<div class="section" id="Files"><div class="container"><div class="row">', FILE_APPEND);
     
     generatefiles($files);
+    file_put_contents ( 'index.html', '</div></div></div>', FILE_APPEND);
     $directory = dir_list($librarypath);
     var_dump($directory);
-    generatefiles($directory);
+    generatedirectory($directory);
 }
 function resultisDirectory($result){
+    $id = rand();
     $container = '
-    </div></div></div>
         <div class="section" id="'. $result . '">
             <div class="container">
                 <div class="row">
-                <h1><b>'. $result .'</b></h1>
+                <h1><b><a href="javascript:toggle(\''. $id . '\')">'. $result .'</a></b></h1>
+                <div id="' . $id .  '" style="display: none">
     ';      
     
     file_put_contents ( 'index.html', $container, FILE_APPEND);
-    $newPath = $GLOBALS['librarypath']  . $result;
     scandirectory($result);
+    file_put_contents ( 'index.html', '</div></div></div></div>', FILE_APPEND);
 }
 function resultisFile($result){
     $container = '
@@ -46,6 +49,12 @@ function resultisFile($result){
     </div>';      
     
     file_put_contents ( 'index.html', $container, FILE_APPEND);
+}
+function generatedirectory($files){
+    foreach ($files as $value) 
+    {
+            resultisDirectory($value);
+    }
 }
 function generatefiles($files){
     foreach ($files as $value) 
@@ -68,7 +77,7 @@ function filelist($d){
        return $l; 
 }
 function dir_list($d){ 
-    foreach(array_diff(scandir($d),array('.','..')) as $f)if(is_dir($d.'/'.$f))$l[]=$d.$f."\\"; 
+    foreach(array_diff(scandir($d),array('.','..', '.git')) as $f)if(is_dir($d.'/'.$f))$l[]=$d.$f."/"; 
     return $l; 
 } 
 
@@ -87,6 +96,17 @@ function generateHTMLCore(){
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+            <script type="text/javascript">
+  function toggle(id){
+    var e = document.getElementById(id);
+     
+    if (e.style.display == "none"){
+       e.style.display = "";
+    } else {
+       e.style.display = "none";
+    }
+  }
+</script>
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"
           type="text/css">
     <link href="necessary_files/style.css" rel="stylesheet" type="text/css">
@@ -118,9 +138,7 @@ function generateHTMLCore(){
             </div>
         </div>
     </div>
-    <div class="section" id="Files">
-        <div class="container">
-            <div class="row">
+
     ');
 }
 
