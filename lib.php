@@ -18,8 +18,11 @@ function checkarguments($argv)
 function scandirectory($librarypath)
 {
     $files = filelist($librarypath);
+    var_dump($files);
+    
     generatefiles($files);
     $directory = dir_list($librarypath);
+    var_dump($directory);
     generatefiles($directory);
 }
 function resultisDirectory($result){
@@ -28,13 +31,12 @@ function resultisDirectory($result){
         <div class="section" id="'. $result . '">
             <div class="container">
                 <div class="row">
-                <h1>'. $result .' </h1>
+                <h1><b>'. $result .'</b></h1>
     ';      
     
     file_put_contents ( 'index.html', $container, FILE_APPEND);
     $newPath = $GLOBALS['librarypath']  . $result;
-    echo $newPath;
-    scandirectory($newPath);
+    scandirectory($result);
 }
 function resultisFile($result){
     $container = '
@@ -46,7 +48,9 @@ function resultisFile($result){
     file_put_contents ( 'index.html', $container, FILE_APPEND);
 }
 function generatefiles($files){
-    foreach ($files as $value) {
+    foreach ($files as $value) 
+    {
+        print $value."\n";
         $isdirectory = is_dir($value);
         if($isdirectory == 1){
             resultisDirectory($value);
@@ -60,12 +64,12 @@ function generatefiles($files){
 }
 
 function filelist($d){
-    foreach(array_diff(scandir($d),array('.','..')) as $f)if(is_file($d.'/'.$f))$l[]=$f; 
-       return $f; 
+    foreach(array_diff(scandir($d),array('.','..')) as $f)if(is_file($d.'/'.$f))$l[]=$d.$f; 
+       return $l; 
 }
 function dir_list($d){ 
-    foreach(array_diff(scandir($d),array('.','..')) as $f)if(is_dir($d.'/'.$f))$l[]=$f; 
-    return $f; 
+    foreach(array_diff(scandir($d),array('.','..')) as $f)if(is_dir($d.'/'.$f))$l[]=$d.$f."\\"; 
+    return $l; 
 } 
 
 function generateHTMLCore(){
