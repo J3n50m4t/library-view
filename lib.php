@@ -2,6 +2,13 @@
 // Global Vars
 $librarypath =  $argv[1];
 checkarguments($argv);
+
+function var_dump_pre($mixed = null) {
+    echo '<pre>';
+    var_dump($mixed);
+    echo '</pre>';
+    return null;
+  }
 function checkarguments($argv)
 {
     if ($argv < 2 ){
@@ -29,22 +36,41 @@ function scandirectory($librarypath)
 }
 function resultisDirectory($result){
     $id = rand();
+    //remove full path
+    $directoryname = str_replace( $GLOBALS['librarypath'], '', $result);
+    //remove '/'
+    $directoryname = str_replace( '/', '', $directoryname);
+    $imdb = new IMDB($directoryname);
     $container = '
-        <div class="section" id="'. $result . '">
+        <div class="section" id="'. $directoryname . '">
             <div class="container">
                 <div class="row">
-                <h1><b><a href="javascript:toggle(\''. $id . '\')">'. $result .'</a></b></h1>
+                <h1><b><a href="javascript:toggle(\''. $id . '\')">'. $directoryname .'</a></b></h1>
                 <div id="' . $id .  '" style="display: none">
     ';      
-    
     file_put_contents ( 'index.html', $container, FILE_APPEND);
     scandirectory($result);
-    file_put_contents ( 'index.html', '</div></div></div></div>', FILE_APPEND);
+
+    $key = "";
+    $querymovie = str_replace( ' ', '%20', $directoryname);
+    $querymovie = str_replace( '(', '%28', $querymovie);
+    $querymovie = str_replace( ')', '%29', $querymovie);
+    $json = file_get_contents("https://api.themoviedb.org/3/search/movie?api_key=$key&language=de-DE&query=$querymovie&page=1&include_adult=true");
+    $movie = json_decode($json, true);
+    $closecontainer = ' </div>' . get_dir_size_in_gb($result) . ' GB <br> <pre>'.$movie['results']['0']['id'].  '</pre> </div></div></div>';
+
+   
+
+    file_put_contents ( 'index.html', $closecontainer, FILE_APPEND);
 }
 function resultisFile($result){
+        //remove full path
+        $filename = str_replace( $GLOBALS['librarypath'], '', $result);
+        //remove '/'
+        $filename = str_replace( '/', '', $filename);
     $container = '
-    <div class="col-sm-3">
-        <h1>'. $result .' </h1>
+    <div class="col-sm-6">
+        <h1>'. $filename .' </h1>
         <p> Es handelt sich um eine Datei </p>
     </div>';      
     
@@ -79,7 +105,19 @@ function filelist($d){
 function dir_list($d){ 
     foreach(array_diff(scandir($d),array('.','..', '.git')) as $f)if(is_dir($d.'/'.$f))$l[]=$d.$f."/"; 
     return $l; 
+}
+function get_dir_size_in_gb($directory){
+    $size = 0;
+    $files= glob($directory.'/*');
+    foreach($files as $path){
+        is_file($path) && $size += filesize($path);
+        is_dir($path) && get_dir_size_in_gb($path);
+    }
+    $size = $size / 1024 / 1024 / 1024;
+    $size = round($size, 2);
+    return $size;
 } 
+ 
 
 function generateHTMLCore(){
     file_put_contents ( 'index.html', '
