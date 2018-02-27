@@ -40,7 +40,6 @@ function resultisDirectory($result){
     $directoryname = str_replace( $GLOBALS['librarypath'], '', $result);
     //remove '/'
     $directoryname = str_replace( '/', '', $directoryname);
-    $imdb = new IMDB($directoryname);
     $container = '
         <div class="section" id="'. $directoryname . '">
             <div class="container">
@@ -57,7 +56,9 @@ function resultisDirectory($result){
     $querymovie = str_replace( ')', '%29', $querymovie);
     $json = file_get_contents("https://api.themoviedb.org/3/search/movie?api_key=$key&language=de-DE&query=$querymovie&page=1&include_adult=true");
     $movie = json_decode($json, true);
-    $closecontainer = ' </div>' . get_dir_size_in_gb($result) . ' GB <br> <pre>'.$movie['results']['0']['id'].  '</pre> </div></div></div>';
+    var_dump($movie);
+    $movieposter = $movie['results']['0']['poster_path'];
+    $closecontainer = " </div>" . get_dir_size_in_gb($result) . " GB <br><img src=\"https://image.tmdb.org/t/p/w500$movieposter\"> <pre>".$movie['results']['0']['id'].  "</pre> </div></div></div>";
 
    
 
