@@ -1072,6 +1072,7 @@ input, button, select, textarea {
     font-size: inherit;
     line-height: inherit;
 }
+xmp{ white-space:pre-wrap; word-wrap:break-word; }
 a {
     color: #337cbb;
     text-decoration: none;
