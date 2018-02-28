@@ -46,26 +46,35 @@ function resultisDirectory($result){
     $directoryname = str_replace( $GLOBALS['librarypath'], '', $result);
     //remove '/' at the end
     $directoryname = str_replace( '/', '', $directoryname);
-
-    $querymovie = str_replace( ' ', '%20', $directoryname);
+    
+    preg_match('/\([0-9]{4}\)$/', $directoryname, $movieyear);
+    // $moviename = preg_replace('/\([0-9]+\)/', '', $directoryname);
+    print_r($directoryname);
+    
+    $moviename = str_replace( ' ' . $movieyear['0'], '', $directoryname);
+    $querymovie = str_replace( ' ', '%20', $moviename);
     $querymovie = str_replace( '(', '%28', $querymovie);
     $querymovie = str_replace( ')', '%29', $querymovie);
+    $movieyear = str_replace( '(', '', $movieyear['0']);
+    $movieyear = str_replace( ')', '', $movieyear);
+    print_r($movieyear);
     //sleep so secure api limit https://www.themoviedb.org/faq/api
     usleep(250000);
-    $json = file_get_contents("https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true");
+    echo "https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true&year=$movieyear";
+    $json = file_get_contents("https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true&year=$movieyear");
     $movie = json_decode($json, true);
     $movieposter = $movie['results']['0']['poster_path'];
     //Posts all fetched data to cli. 
-    var_dump($movie);
+    // var_dump($movie);
     // Create html container
-    $container= "<div class=\"section\" id=\"$directoryname\">
+    $container= "<div class=\"section\" id=\"$moviename\">
     <div class=\"container\">
     <div class=\"row\">
     <div class=\"col-sm-2\">
     <img src=\"https://image.tmdb.org/t/p/w500$movieposter\" class=\"img-responsive\">
     </div>
     <div class=\"col-sm-10\">
-    <h1><b><a href=\"javascript:toggle('$id')\">$directoryname</a></b></h1>
+    <h1><b><a href=\"javascript:toggle('$id')\">$moviename</a></b></h1>
     <table width=\"100%\">
     <tr>
     <col width=\"25%\">
