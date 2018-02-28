@@ -50,6 +50,8 @@ function resultisDirectory($result){
     $querymovie = str_replace( ' ', '%20', $directoryname);
     $querymovie = str_replace( '(', '%28', $querymovie);
     $querymovie = str_replace( ')', '%29', $querymovie);
+    //sleep so secure api limit https://www.themoviedb.org/faq/api
+    usleep(250000);
     $json = file_get_contents("https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true");
     $movie = json_decode($json, true);
     $movieposter = $movie['results']['0']['poster_path'];
