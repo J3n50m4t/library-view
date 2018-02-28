@@ -1,14 +1,10 @@
 <?php
 // Global Vars
 $librarypath =  $argv[1];
+$tmdbkey = "";
 checkarguments($argv);
 
-function var_dump_pre($mixed = null) {
-    echo '<pre>';
-    var_dump($mixed);
-    echo '</pre>';
-    return null;
-  }
+
 function checkarguments($argv)
 {
     if ($argv < 2 ){
@@ -35,32 +31,64 @@ function scandirectory($librarypath)
     generatedirectory($directory);
 }
 function resultisDirectory($result){
+    // grant access to global Api key
+    global $tmdbkey;
+    // Randomize ID for the javascript toggle 
+    // NO GOOD IDEA 
+    // Needs rework
     $id = rand();
+    
+
+
+    
+    // $result contains full path+filename
     //remove full path
     $directoryname = str_replace( $GLOBALS['librarypath'], '', $result);
-    //remove '/'
+    //remove '/' at the end
     $directoryname = str_replace( '/', '', $directoryname);
-    $container = '
-        <div class="section" id="'. $directoryname . '">
-            <div class="container">
-                <div class="row">
-                <h1><b><a href="javascript:toggle(\''. $id . '\')">'. $directoryname .'</a></b></h1>
-                <div id="' . $id .  '" style="display: none">
-    ';      
-    file_put_contents ( 'index.html', $container, FILE_APPEND);
-    scandirectory($result);
 
-    $key = "";
     $querymovie = str_replace( ' ', '%20', $directoryname);
     $querymovie = str_replace( '(', '%28', $querymovie);
     $querymovie = str_replace( ')', '%29', $querymovie);
-    $json = file_get_contents("https://api.themoviedb.org/3/search/movie?api_key=$key&language=de-DE&query=$querymovie&page=1&include_adult=true");
+    $json = file_get_contents("https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true");
     $movie = json_decode($json, true);
-    var_dump($movie);
     $movieposter = $movie['results']['0']['poster_path'];
-    $closecontainer = " </div>" . get_dir_size_in_gb($result) . " GB <br><img src=\"https://image.tmdb.org/t/p/w500$movieposter\"> <pre>".$movie['results']['0']['id'].  "</pre> </div></div></div>";
-
+    //Posts all fetched data to cli. 
+    var_dump($movie);
+    // Create html container
+    $container= "<div class=\"section\" id=\"$directoryname\">
+    <div class=\"container\">
+    <div class=\"row\">
+    <div class=\"col-sm-2\">
+    <img src=\"https://image.tmdb.org/t/p/w500$movieposter\" class=\"img-responsive\">
+    </div>
+    <div class=\"col-sm-10\">
+    <h1><b><a href=\"javascript:toggle('$id')\">$directoryname</a></b></h1>
+    <table width=\"100%\">
+    <tr>
+    <col width=\"25%\">
+    <col width=\"25%\">
+    <col width=\"25%\">
+    <col width=\"25%\">
+        <td width=\"25%\">" . get_dir_size_in_gb($result) . " GB </td>
+        <td width=\"25%\">" . $movie['results']['0']['original_title'] . "</td>
+        <td width=\"25%\">" . get_dir_size_in_gb($result) . " GB </td>
+        <td width=\"25%\">" . $movie['results']['0']['original_title'] . "</td>
+    </tr>
+    </table>
+    <xmp>".$movie['results']['0']['overview'].  "</xmp>
+    ";
+    // add the created container to the index file
+    file_put_contents ( 'index.html', $container, FILE_APPEND);
+    
+    // scandirectory($result);
+    
+    // Web Api Usage doesnt support spaces and (). Due to the naming of my files : "Movie (year)" I need do remove these 
+    
+    
+    $closecontainer = "</div>
    
+    </div></div></div>";
 
     file_put_contents ( 'index.html', $closecontainer, FILE_APPEND);
 }
@@ -177,11 +205,8 @@ function generateHTMLCore(){
             </div>
         </div>
     </div>
-
     ');
 }
-
-
 function generateHTMLEnding(){
 file_put_contents ( 'index.html', '
 </div>
