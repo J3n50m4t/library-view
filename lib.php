@@ -66,7 +66,8 @@ function resultisDirectory($result){
     $vote_average = $movie['results']['0']['vote_average'];
     $vote_count = $movie['results']['0']['vote_count'];    
     $moviediv = strtolower(str_replace( ' ', '', $movienamebydirectory));
-    
+    $moviediv = str_replace( '\'', '', $moviediv);
+    $moviediv = "a" . $moviediv . "a";
     generateMovieRating($moviediv, $vote_average);
     
     
@@ -275,7 +276,7 @@ window.addEventListener("load", function(event) {
 
 function generateMovieRating($id, $rating){
     $rating = $rating / 10;
-    $id2 = $id . "js";
+    $id2 = "js" .$id . "js";
     file_put_contents ( "necessary_files/javascript.js", "
     var $id2 = new ProgressBar.Circle($id, {
         color: '#aaa',
