@@ -52,13 +52,13 @@ function resultisDirectory($result){
         $dirnameCharsOnly= $dirnameCharsOnly.$value;
     }
     $dirnameCharsOnly = strtolower($dirnameCharsOnly. generateRandomString());
+    // Web Api Usage doesnt support spaces and (). Due to the naming of my files : "Movie (year)" I need do remove these 
     $movienamebydirectory = str_replace( ' ' . $movieyear['0'], '', $directoryname);
     $querymovie = str_replace( ' ', '%20', $movienamebydirectory);
     $querymovie = str_replace( '(', '%28', $querymovie);
     $querymovie = str_replace( ')', '%29', $querymovie);
     $movieyear = str_replace( '(', '', $movieyear['0']);
     $movieyear = str_replace( ')', '', $movieyear);
-
     //sleep so secure api limit https://www.themoviedb.org/faq/api
     usleep(250000);
     $json = file_get_contents("https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true&year=$movieyear");
@@ -67,12 +67,8 @@ function resultisDirectory($result){
     $movieposter = $movie['results']['0']['poster_path'];
     $vote_average = $movie['results']['0']['vote_average'];
     $vote_count = $movie['results']['0']['vote_count'];    
-    
+    //generate the movie Rating in JS
     generateMovieRating($dirnameCharsOnly, $vote_average);
-    
-    
-    //Posts all fetched data to cli. 
-    // var_dump($movie);
     // Create html container
     $container= "<div class=\"section\" id=\"$movienamebytmdb\">
     <div class=\"container\">
@@ -91,20 +87,13 @@ function resultisDirectory($result){
     </tr>
     </table>
     <xmp>".$movie['results']['0']['overview'].  "</xmp>
+    </div></div></div></div>
     ";
     // add the created container to the index file
     file_put_contents ( 'index.html', $container, FILE_APPEND);
-    
-    
-    // Web Api Usage doesnt support spaces and (). Due to the naming of my files : "Movie (year)" I need do remove these 
-    
-    
-    $closecontainer = "</div>
-   
-    </div></div></div>";
-
-    file_put_contents ( 'index.html', $closecontainer, FILE_APPEND);
 }
+
+//runs when scanned object is a file
 function resultisFile($result){
         //remove full path
         $filename = str_replace( $GLOBALS['librarypath'], '', $result);
@@ -127,7 +116,6 @@ function generatedirectory($files){
 function generatefiles($files){
     foreach ($files as $value) 
     {
-        print $value."\n";
         $isdirectory = is_dir($value);
         if($isdirectory == 1){
             resultisDirectory($value);
@@ -135,9 +123,7 @@ function generatefiles($files){
         else{
             resultisFile($value);
         }
-       
     }
- 
 }
 
 function filelist($d){
