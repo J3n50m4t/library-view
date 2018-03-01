@@ -37,10 +37,6 @@ function resultisDirectory($result){
     // NO GOOD IDEA 
     // Needs rework
     $id = rand();
-    
-
-
-    
     // $result contains full path+filename
     //remove full path
     $directoryname = str_replace( $GLOBALS['librarypath'], '', $result);
@@ -51,30 +47,39 @@ function resultisDirectory($result){
     // $moviename = preg_replace('/\([0-9]+\)/', '', $directoryname);
     print_r($directoryname);
     
-    $moviename = str_replace( ' ' . $movieyear['0'], '', $directoryname);
-    $querymovie = str_replace( ' ', '%20', $moviename);
+    $movienamebydirectory = str_replace( ' ' . $movieyear['0'], '', $directoryname);
+    $querymovie = str_replace( ' ', '%20', $movienamebydirectory);
     $querymovie = str_replace( '(', '%28', $querymovie);
     $querymovie = str_replace( ')', '%29', $querymovie);
     $movieyear = str_replace( '(', '', $movieyear['0']);
     $movieyear = str_replace( ')', '', $movieyear);
     print_r($movieyear);
+    
     //sleep so secure api limit https://www.themoviedb.org/faq/api
     usleep(250000);
     echo "https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true&year=$movieyear";
     $json = file_get_contents("https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true&year=$movieyear");
     $movie = json_decode($json, true);
+    $movienamebytmdb = $movie['results']['0']['title'];
     $movieposter = $movie['results']['0']['poster_path'];
+    $vote_average = $movie['results']['0']['vote_average'];
+    $vote_count = $movie['results']['0']['vote_count'];    
+    $moviediv = strtolower(str_replace( ' ', '', $movienamebydirectory));
+    
+    generateMovieRating($moviediv, $vote_average);
+    
+    
     //Posts all fetched data to cli. 
     // var_dump($movie);
     // Create html container
-    $container= "<div class=\"section\" id=\"$moviename\">
+    $container= "<div class=\"section\" id=\"$movienamebytmdb\">
     <div class=\"container\">
     <div class=\"row\">
     <div class=\"col-sm-2\">
-    <img src=\"https://image.tmdb.org/t/p/w500$movieposter\" class=\"img-responsive\">
+    <img data-src=\"https://image.tmdb.org/t/p/w500$movieposter\" class=\"img-responsive lazyload\">
     </div>
     <div class=\"col-sm-10\">
-    <h1><b><a href=\"javascript:toggle('$id')\">$moviename</a></b></h1>
+    <h1><b><a href=\"javascript:toggle('$id')\">$movienamebytmdb</a></b></h1>
     <table width=\"100%\">
     <tr>
     <col width=\"25%\">
@@ -83,7 +88,7 @@ function resultisDirectory($result){
     <col width=\"25%\">
         <td width=\"25%\">" . get_dir_size_in_gb($result) . " GB </td>
         <td width=\"25%\">" . $movie['results']['0']['original_title'] . "</td>
-        <td width=\"25%\">" . get_dir_size_in_gb($result) . " GB </td>
+        <td width=\"25%\">Rating: <br><div class =\"moviecontainer\"id=\"$moviediv\"></div></td>
         <td width=\"25%\">" . $movie['results']['0']['original_title'] . "</td>
     </tr>
     </table>
@@ -171,10 +176,12 @@ function generateHTMLCore(){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
+    <script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
             <script type="text/javascript">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
   function toggle(id){
     var e = document.getElementById(id);
      
@@ -188,6 +195,7 @@ function generateHTMLCore(){
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"
           type="text/css">
     <link href="necessary_files/style.css" rel="stylesheet" type="text/css">
+    <script src="necessary_files/javascript.js"></script>
     </head>
     <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -247,7 +255,59 @@ file_put_contents ( 'index.html', '
         </div>
     </div>
 </footer>
+<script src="https://cdn.rawgit.com/tuupola/jquery_lazyload/0a5e0785a90eb41a6411d67a2f2e56d55bbecbd3/lazyload.js"></script>
+<script type="text/javascript" charset="utf-8">
+window.addEventListener("load", function(event) {
+        let images = document.querySelectorAll(".lazyload");
+    images.forEach(image => {
+        let src = image.getAttribute("data-src");
+        image.setAttribute("data-src", src + "?" + Math.random());
+    });
+    lazyload(images);
+});
+</script>
+<script src="necessary_files/javascript.js"></script>
+</body>
+</html>
 ', FILE_APPEND);
 }
+
+function generateMovieRating($id, $rating){
+    $rating = $rating / 10;
+    $id2 = $id . "js";
+    file_put_contents ( "necessary_files/javascript.js", "
+    var $id2 = new ProgressBar.Circle($id, {
+        color: '#aaa',
+        // This has to be the same size as the maximum width to
+        // prevent clipping
+        strokeWidth: 4,
+        trailWidth: 1,
+        easing: 'easeInOut',
+        duration: 2000,
+        text: {
+        autoStyleContainer: false
+        },
+        from: { color: '#ff0000', width: 1 },
+        to: { color: '#00ff00', width: 4 },
+        // Set default step function for all animate calls
+        step: function(state, circle) {
+        circle.path.setAttribute('stroke', state.color);
+        circle.path.setAttribute('stroke-width', state.width);
+    
+        var value = Math.round(circle.value() * 100);
+        if (value === 0) {
+            circle.setText('');
+        } else {
+            circle.setText(value);
+        }
+        }
+  });
+  $id2.text.style.fontFamily = '\"Raleway\", Helvetica, sans-serif';
+  $id2.text.style.fontSize = '2rem';
+  
+  $id2.animate($rating);  // Number from 0.0 to 1.0
+  ", FILE_APPEND);
+}
+
 ?>
     
