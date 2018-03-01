@@ -34,10 +34,7 @@ function scandirectory($librarypath)
 function resultisDirectory($result){
     // grant access to global Api key
     global $tmdbkey;
-    // Randomize ID for the javascript toggle 
-    // NO GOOD IDEA 
-    // Needs rework
-    $id = rand();
+  
     // $result contains full path+filename
     //remove full path
     $directoryname = str_replace( $GLOBALS['librarypath'], '', $result);
@@ -45,30 +42,45 @@ function resultisDirectory($result){
     $directoryname = str_replace( '/', '', $directoryname);
     
     preg_match('/\([0-9]{4}\)$/', $directoryname, $movieyear);
-    // $moviename = preg_replace('/\([0-9]+\)/', '', $directoryname);
-    print_r($directoryname);
+    preg_match_all("/[a-zA-Z]+/", $directoryname, $directoryNameRegex);
     
+    // $moviename = preg_replace('/\([0-9]+\)/', '', $directoryname);
+    var_dump($directoryNameRegex[0]);
+    $dirnameCharsOnly="";
+    foreach ($directoryNameRegex[0] as $value) 
+    {
+        $dirnameCharsOnly= $dirnameCharsOnly.$value;
+    }
+    $dirnameCharsOnly = strtolower($dirnameCharsOnly. generateRandomString());
+    print_r($dirnameCharsOnly);
+
+    
+
+
+
     $movienamebydirectory = str_replace( ' ' . $movieyear['0'], '', $directoryname);
     $querymovie = str_replace( ' ', '%20', $movienamebydirectory);
     $querymovie = str_replace( '(', '%28', $querymovie);
     $querymovie = str_replace( ')', '%29', $querymovie);
     $movieyear = str_replace( '(', '', $movieyear['0']);
     $movieyear = str_replace( ')', '', $movieyear);
+
+    print_r("\n");
     print_r($movieyear);
-    
+    print_r("\n");
+    print_r($moviediv);
+    print_r("\n");
     //sleep so secure api limit https://www.themoviedb.org/faq/api
     usleep(250000);
-    echo "https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true&year=$movieyear";
+    // echo "https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true&year=$movieyear";
     $json = file_get_contents("https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true&year=$movieyear");
     $movie = json_decode($json, true);
     $movienamebytmdb = $movie['results']['0']['title'];
     $movieposter = $movie['results']['0']['poster_path'];
     $vote_average = $movie['results']['0']['vote_average'];
     $vote_count = $movie['results']['0']['vote_count'];    
-    $moviediv = strtolower(str_replace( ' ', '', $movienamebydirectory));
-    $moviediv = str_replace( '\'', '', $moviediv);
-    $moviediv = "a" . $moviediv . "a";
-    generateMovieRating($moviediv, $vote_average);
+    
+    generateMovieRating($dirnameCharsOnly, $vote_average);
     
     
     //Posts all fetched data to cli. 
@@ -81,16 +93,12 @@ function resultisDirectory($result){
     <img data-src=\"https://image.tmdb.org/t/p/w500$movieposter\" class=\"img-responsive lazyload\">
     </div>
     <div class=\"col-sm-10\">
-    <h1><b><a href=\"javascript:toggle('$id')\">$movienamebytmdb</a></b></h1>
+    <h1><b>$movienamebytmdb</b></h1>
     <table width=\"100%\">
     <tr>
-    <col width=\"25%\">
-    <col width=\"25%\">
-    <col width=\"25%\">
-    <col width=\"25%\">
         <td width=\"25%\">" . get_dir_size_in_gb($result) . " GB </td>
         <td width=\"25%\">" . $movie['results']['0']['original_title'] . "</td>
-        <td width=\"25%\">Rating: <br><div class =\"moviecontainer\"id=\"$moviediv\"></div></td>
+        <td width=\"25%\"><div class =\"moviecontainer\"id=\"$dirnameCharsOnly\"></div></td>
         <td width=\"25%\">" . $movie['results']['0']['original_title'] . "</td>
     </tr>
     </table>
@@ -99,7 +107,6 @@ function resultisDirectory($result){
     // add the created container to the index file
     file_put_contents ( 'index.html', $container, FILE_APPEND);
     
-    // scandirectory($result);
     
     // Web Api Usage doesnt support spaces and (). Due to the naming of my files : "Movie (year)" I need do remove these 
     
