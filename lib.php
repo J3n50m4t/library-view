@@ -2,6 +2,7 @@
 // Global Vars
 $librarypath =  $argv[1];
 $tmdbkey = "";
+unlink("necessary_files/javascript.js");
 checkarguments($argv);
 
 
