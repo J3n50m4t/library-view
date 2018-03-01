@@ -182,8 +182,8 @@ function generateHTMLCore(){
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+            <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
             <script type="text/javascript">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
   function toggle(id){
     var e = document.getElementById(id);
      
@@ -193,7 +193,7 @@ function generateHTMLCore(){
        e.style.display = "none";
     }
   }
-</script>
+    </script>
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"
           type="text/css">
     <link href="necessary_files/style.css" rel="stylesheet" type="text/css">
@@ -229,49 +229,49 @@ function generateHTMLCore(){
     ');
 }
 function generateHTMLEnding(){
-file_put_contents ( 'index.html', '
-</div>
-</div>
-</div>
-<footer class="section section-primary">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-3">
-                <h1>MediaLib</h1>
-                <p>All infos got scanned and are shown above.
-                    <br><br>
-                </p>
-            </div>
-            <div class="col-sm-3">
-                <p class="text-info text-right">
-                    <br>
-                    <br>
-                </p>
-                <div class="row">
-                    <div class="col-md-12 hidden-xs text-right">
-                        <a href="https://github.com/J3n50m4t/library-view" target="_blank"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
-                        <a href="#top"><i class="fa fa-3x fa-fw fa-arrow-up text-inverse"></i></a>
+    file_put_contents ( 'index.html', '
+    </div>
+    </div>
+    </div>
+    <footer class="section section-primary">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h1>MediaLib</h1>
+                    <p>All infos got scanned and are shown above.
+                        <br><br>
+                    </p>
+                </div>
+                <div class="col-sm-3">
+                    <p class="text-info text-right">
+                        <br>
+                        <br>
+                    </p>
+                    <div class="row">
+                        <div class="col-md-12 hidden-xs text-right">
+                            <a href="https://github.com/J3n50m4t/library-view" target="_blank"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+                            <a href="#top"><i class="fa fa-3x fa-fw fa-arrow-up text-inverse"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</footer>
-<script src="https://cdn.rawgit.com/tuupola/jquery_lazyload/0a5e0785a90eb41a6411d67a2f2e56d55bbecbd3/lazyload.js"></script>
-<script type="text/javascript" charset="utf-8">
-window.addEventListener("load", function(event) {
-        let images = document.querySelectorAll(".lazyload");
-    images.forEach(image => {
-        let src = image.getAttribute("data-src");
-        image.setAttribute("data-src", src + "?" + Math.random());
+    </footer>
+    <script src="https://cdn.rawgit.com/tuupola/jquery_lazyload/0a5e0785a90eb41a6411d67a2f2e56d55bbecbd3/lazyload.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    window.addEventListener("load", function(event) {
+            let images = document.querySelectorAll(".lazyload");
+        images.forEach(image => {
+            let src = image.getAttribute("data-src");
+            image.setAttribute("data-src", src + "?" + Math.random());
+        });
+        lazyload(images);
     });
-    lazyload(images);
-});
-</script>
-<script src="necessary_files/javascript.js"></script>
-</body>
-</html>
-', FILE_APPEND);
+    </script>
+    <script src="necessary_files/javascript.js"></script>
+    </body>
+    </html>
+    ', FILE_APPEND);
 }
 
 function generateMovieRating($id, $rating){
