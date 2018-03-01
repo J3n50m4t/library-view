@@ -1,4 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Lato|Lato');
+
+.moviecontainer {
+    margin: 20px !important;
+    width: 50px !important;
+    height: 50px !important;
+    position: relative;
+  }
+
 textarea.cryptbox{
     width: 100%;
     outline: none !important;
