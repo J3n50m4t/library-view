@@ -52,12 +52,6 @@ function resultisDirectory($result){
         $dirnameCharsOnly= $dirnameCharsOnly.$value;
     }
     $dirnameCharsOnly = strtolower($dirnameCharsOnly. generateRandomString());
-    print_r($dirnameCharsOnly);
-
-    
-
-
-
     $movienamebydirectory = str_replace( ' ' . $movieyear['0'], '', $directoryname);
     $querymovie = str_replace( ' ', '%20', $movienamebydirectory);
     $querymovie = str_replace( '(', '%28', $querymovie);
@@ -65,14 +59,8 @@ function resultisDirectory($result){
     $movieyear = str_replace( '(', '', $movieyear['0']);
     $movieyear = str_replace( ')', '', $movieyear);
 
-    print_r("\n");
-    print_r($movieyear);
-    print_r("\n");
-    print_r($moviediv);
-    print_r("\n");
     //sleep so secure api limit https://www.themoviedb.org/faq/api
     usleep(250000);
-    // echo "https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true&year=$movieyear";
     $json = file_get_contents("https://api.themoviedb.org/3/search/movie?api_key=$tmdbkey&language=de-DE&query=$querymovie&page=1&include_adult=true&year=$movieyear");
     $movie = json_decode($json, true);
     $movienamebytmdb = $movie['results']['0']['title'];
