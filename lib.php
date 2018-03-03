@@ -89,7 +89,7 @@ function resultisDirectory($result){
     <img data-src=\"https://image.tmdb.org/t/p/w500$movieposter\" class=\"img-responsive lazyload\">
     </div>
     <div class=\"col-sm-10\">
-    <h1 class = \"nomargin\"><b>$movienamebytmdb</b></h1>
+    <h1 class = \"nomargin\"><b><a href=\"#$dirnameCharsOnly\">$movienamebytmdb</a></b></h1>
     <table width=\"100%\">
     <tr>
         <td width=\"25%\">" . get_dir_size_in_gb($result) . " GB </td>
