@@ -2,21 +2,23 @@
 // Global Vars
 $librarypath =  $argv[1];
 $tmdbkey = "";
+$ratingOption = $argv[2];
 unlink("necessary_files/javascript.js");
-checkarguments($argv);
+checkarguments($argc, $argv);
 
 
-function checkarguments($argv)
+function checkarguments($argc, $argv)
 {
-    if ($argv < 2 ){
-        echo "Failed! Add a path as argument";
+    if ($argc < 3 ){
+        echo "Failed! Add a path and ratingoption as argument";
     }
     else{
         generateHTMLCore();
         $librarypath =  $argv[1];
         scandirectory($librarypath);
+        generateHTMLEnding();
     }
-    generateHTMLEnding();
+    
 }
 
 function scandirectory($librarypath)
@@ -33,7 +35,7 @@ function scandirectory($librarypath)
 }
 function resultisDirectory($result){
     // grant access to global Api key
-    global $tmdbkey;
+    global $tmdbkey, $ratingOption;
   
     // $result contains full path+filename
     //remove full path
@@ -68,7 +70,17 @@ function resultisDirectory($result){
     $vote_average = $movie['results']['0']['vote_average'];
     $vote_count = $movie['results']['0']['vote_count'];    
     //generate the movie Rating in JS
-    generateMovieRating($dirnameCharsOnly, $vote_average);
+    if($ratingOption == "circle"){
+        generateMovieRatingCircle($dirnameCharsOnly, $vote_average);
+        $rating = "<div class =\"moviecontainer\"id=\"". $dirnameCharsOnly. "\"></div>";
+    }
+    elseif ($ratingOption == "numbers"){
+        $rating = "<div class =\"rating\">$vote_average/10 in $vote_count votes</div>";
+    }
+    else {
+        echo "Incorrect Rating";
+        $rating = "Incorrect Rating Parameter passed to script.";
+    }
     // Create html container
     $container= "<div class=\"section\" id=\"$movienamebytmdb\">
     <div class=\"container\">
@@ -82,7 +94,7 @@ function resultisDirectory($result){
     <tr>
         <td width=\"25%\">" . get_dir_size_in_gb($result) . " GB </td>
         <td width=\"25%\">" . $movie['results']['0']['original_title'] . "</td>
-        <td width=\"25%\"><div class =\"moviecontainer\"id=\"$dirnameCharsOnly\"></div></td>
+        <td width=\"25%\">$rating</td>
         <td width=\"25%\">" . $movie['results']['0']['original_title'] . "</td>
     </tr>
     </table>
@@ -255,7 +267,7 @@ function generateHTMLEnding(){
     ', FILE_APPEND);
 }
 
-function generateMovieRating($id, $rating){
+function generateMovieRatingCircle($id, $rating){
     $rating = $rating / 10;
     $id2 = "js" .$id . "js";
     file_put_contents ( "necessary_files/javascript.js", "
@@ -284,12 +296,12 @@ function generateMovieRating($id, $rating){
             circle.setText(value);
         }
         }
-  });
-  $id2.text.style.fontFamily = '\"Raleway\", Helvetica, sans-serif';
-  $id2.text.style.fontSize = '2rem';
-  
-  $id2.animate($rating);  // Number from 0.0 to 1.0
-  ", FILE_APPEND);
+    });
+    $id2.text.style.fontFamily = '\"Raleway\", Helvetica, sans-serif';
+    $id2.text.style.fontSize = '2rem';
+    
+    $id2.animate($rating);  // Number from 0.0 to 1.0
+    ", FILE_APPEND);
 }
 
 function generateRandomString($length = 10) {
