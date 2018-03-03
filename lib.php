@@ -196,13 +196,13 @@ function generateHTMLCore(){
             <div class="collapse navbar-collapse" id="navbar-ex-collapse top">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/index.php">Home</a>
+                        <a href="/index.html">Home</a>
                     </li>
                     <li>
-                        <a href="/index.php">PH</a>
+                        <a href="/index.html">PH</a>
                     </li>
                     <li>
-                    <a href="/index.php">PH</a>
+                    <a href="/index.html">PH</a>
                 </li>
                 </ul>
             </div>
