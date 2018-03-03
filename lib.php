@@ -84,12 +84,12 @@ function resultisDirectory($result){
     // Create html container
     $container= "<div class=\"section\" id=\"$movienamebytmdb\">
     <div class=\"container\">
-    <div class=\"row\">
+    <div class=\"row\" id=\"" .$dirnameCharsOnly . "linking\" style=\"padding-top: 70px; margin-top: -40px;\">
     <div class=\"col-sm-2\">
     <img data-src=\"https://image.tmdb.org/t/p/w500$movieposter\" class=\"img-responsive lazyload\">
     </div>
     <div class=\"col-sm-10\">
-    <h1 class = \"nomargin\"><b><a href=\"#$dirnameCharsOnly\">$movienamebytmdb</a></b></h1>
+    <h1 class = \"nomargin\"><b><a href=\"#" .$dirnameCharsOnly . "linking\">$movienamebytmdb</a></b></h1>
     <table width=\"100%\">
     <tr>
         <td width=\"25%\">" . get_dir_size_in_gb($result) . " GB </td>
