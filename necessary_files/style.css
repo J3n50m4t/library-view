@@ -4,6 +4,7 @@
     width: 50px !important;
     height: 50px !important;
     position: relative;
+    margin: 0 auto
   }
 
 .nomargin{
