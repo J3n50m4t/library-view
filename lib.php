@@ -218,23 +218,16 @@ function generateHTMLEnding(){
     <footer class="section section-primary">
         <div class="container">
             <div class="row">
-                <div class="col-sm-3">
+            <div class="col-sm-12">
                     <h1>MediaLib</h1>
-                    <p>All infos got scanned and are shown above.
-                        <br><br>
+                    <p>
+                        All infos got scanned and are shown above.
                     </p>
-                </div>
-                <div class="col-sm-3">
-                    <p class="text-info text-right">
-                        <br>
-                        <br>
-                    </p>
-                    <div class="row">
-                        <div class="col-md-12 hidden-xs text-right">
-                            <a href="https://github.com/J3n50m4t/library-view" target="_blank"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
-                            <a href="#top"><i class="fa fa-3x fa-fw fa-arrow-up text-inverse"></i></a>
-                        </div>
+                    <div class="text-right">
+                        <a href="https://github.com/J3n50m4t/library-view" target="_blank"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+                        <a href="#top"><i class="fa fa-3x fa-fw fa-arrow-up text-inverse"></i></a>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
