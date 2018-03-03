@@ -95,7 +95,7 @@ function resultisDirectory($result){
         <td width=\"25%\">" . get_dir_size_in_gb($result) . " GB </td>
         <td width=\"25%\">" . $movie['results']['0']['original_title'] . "</td>
         <td width=\"25%\">$rating</td>
-        <td width=\"25%\">" . $movie['results']['0']['original_title'] . "</td>
+        <td width=\"25%\">planned Metadata</td>
     </tr>
     </table>
     <xmp>".$movie['results']['0']['overview'].  "</xmp>
