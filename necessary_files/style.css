@@ -6,32 +6,11 @@
     position: relative;
   }
 
-textarea.cryptbox{
-    width: 100%;
-    outline: none !important;
-    border:1px solid black;
-}
-textarea.cryptbox:focus{
-    outline: none !important;
-    border:2px solid red;
-    background-color: rgba(62, 0, 94, 0.18);
-}
-p.errormessage{
-    font-style: oblique;
-    color: #ffa500;
-    font-size: 2rem;
-    text-align: center;
-    padding-top: 50px;
-    padding-bottom: 50px;
+.nomargin{
+    margin:0;
 }
 div.square{
     min-height: 250px;
-}
-.redfont, .emergency{
-    color: red;
-}
-.greenfont{
-    color:green;
 }
 .highlighted{
     border: 10px solid white;
