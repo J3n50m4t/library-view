@@ -176,17 +176,6 @@ function generateHTMLCore(){
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
             <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
-            <script type="text/javascript">
-  function toggle(id){
-    var e = document.getElementById(id);
-     
-    if (e.style.display == "none"){
-       e.style.display = "";
-    } else {
-       e.style.display = "none";
-    }
-  }
-    </script>
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"
           type="text/css">
     <link href="necessary_files/style.css" rel="stylesheet" type="text/css">
