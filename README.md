@@ -6,5 +6,8 @@
 ### Usage
 
 ```bash
-php lib.php /path/to/directory
+php lib.php /path/to/directory ratingOption
 ```
+####ratingPption
+* circle
+* numbers
