@@ -250,7 +250,7 @@ function generateHTMLEnding(){
         lazyload(images);
     });
     </script>
-    <script src="necessary_files/javascript.js"></script>
+    <script type="text/javascript" src="necessary_files/javascript.js"></script>
     </body>
     </html>
     ', FILE_APPEND);
