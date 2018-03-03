@@ -8,6 +8,9 @@
 ```bash
 php lib.php /path/to/directory ratingOption
 ```
-####ratingPption
+**ratingOption**
 * circle
-* numbers
+* 
+
+**Example**
+php lib.php /here/are/my/movies circle
