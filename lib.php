@@ -1,7 +1,7 @@
 <?php
 // Global Vars
+require_once("necessary_files/config.php");
 $librarypath =  $argv[1];
-$tmdbkey = "";
 $ratingOption = $argv[2];
 unlink("necessary_files/javascript.js");
 checkarguments($argc, $argv);
