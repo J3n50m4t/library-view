@@ -272,18 +272,20 @@ function generateMovieRatingCircle($id, $rating){
     $id2 = "js" .$id . "js";
     file_put_contents ( "necessary_files/javascript.js", "
     var $id2 = new ProgressBar.Circle($id, {
-        color: '#aaa',
+        color: '#212121',
         // This has to be the same size as the maximum width to
         // prevent clipping
-        strokeWidth: 4,
-        trailWidth: 1,
+        strokeWidth: 15,
+        trailWidth: 5,
+        trailColor: '#FFFFFF',
         easing: 'easeInOut',
         duration: 2000,
+        fill: '#757575',
         text: {
-        autoStyleContainer: false
+        autoStyleContainer: true
         },
-        from: { color: '#ff0000', width: 1 },
-        to: { color: '#00ff00', width: 4 },
+        from: { color: '#ff0000', width: 15 },
+        to: { color: '#00ff00', width: 15 },
         // Set default step function for all animate calls
         step: function(state, circle) {
         circle.path.setAttribute('stroke', state.color);
