@@ -1,4 +1,4 @@
-# WIP
+# WIP - currently paused due to other more "important" projects. A search function will get added, feel free to create a PR
 
 ## library-view
 
