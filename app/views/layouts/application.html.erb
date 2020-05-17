@@ -4,12 +4,53 @@
     <title>LibraryView</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">LibraryView</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">placeholder <span class="sr-only">(current)</span></a>
+      </li>
+      <% Library.all.each do |library|%>
+        <li class="nav-item">
+          <%= link_to library.name, show_library_path(library), class: "nav-link"%>
+        </li>
+      <% end %>
+      <li class="nav-item">
+      </li>
+      <li class="nav-item">
+        <%= link_to "Manage Libs", manage_index_path, class: "nav-link"%>
+      </li>
+      <li class="nav-item">
+        <%= link_to "SystemSettings", system_settings_path, class: "nav-link"%>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1 col-md-12">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer navbar-default"><!-- pick class navbar-default for the background color -->
+      <div class="text-center">&copy; LinoPro <%= Date.today.year %> </div>
+    </footer>
   </body>
 </html>

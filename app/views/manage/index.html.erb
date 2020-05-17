@@ -1,0 +1,19 @@
+<h1>Manage#index</h1>
+<p>Find me in app/views/manage/index.html.erb</p>
+<h3>Sections</h3>
+
+<div class="container">
+   
+<% @section_hash["MediaContainer"]["Directory"].each do |section|%>
+  <div class="row">
+        <div class="col-sm-1">
+           <%= link_to 'Add', add_library_path(section), :class => "btn btn-primary", method: :post  unless Library.find_by(plex_key: section["key"])%>
+        </div>
+        <div class="col-sm-1"><%= section["key"] %></div>
+        <div class="col-sm-3"><%= section["title"] %></div>
+        <div class="col-sm-2"><%= section["scanner"] %></div>
+        <div class="col-sm-5"><%= section["Location"]["path"] %></div>
+        
+  </div>
+<% end %>
+</div>

@@ -5,3 +5,6 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+SystemSetting.create_with(value: "https://plex.example.org").find_or_create_by(name: 'plex_url')
+SystemSetting.find_or_create_by(name: "plex_token")

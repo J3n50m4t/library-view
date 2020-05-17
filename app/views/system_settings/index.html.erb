@@ -1,0 +1,9 @@
+<h1>SystemSettings</h1>
+<p>Insert Token and languages</p>
+<% @settings.each  do |setting| %>
+  <%= simple_form_for setting, method: :put do |f| %>
+    <%= I18n.t("systemsetting.#{setting.name}") %>
+    <%= f.input_field :value, label: :value %>
+    <%= f.button :submit %>
+  <% end %>
+<% end %>

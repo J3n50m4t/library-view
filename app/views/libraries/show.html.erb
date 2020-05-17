@@ -1,0 +1,23 @@
+
+<div class="row ">
+          <div class="col-sm-1 d-none d-sm-block">
+            Action
+          </div>
+          <div class="col-sm-5 d-none d-sm-block">Title</div>
+          <div class="col-sm-2 d-none d-sm-block">Rating</div>
+          <div class="col-sm-1 d-none d-sm-block">Download</div>
+    </div>
+    <hr>
+  <% @library_entrys.each do |item| %>
+    <div class="row">
+          <div class="col-sm-1">
+          <% if @plex_url && item.imagepath%>
+            <img src="<%= @plex_url + item.imagepath + "?X-Plex-Token=#{@plex_token}" %>" class="img-fluid">
+            <% end %>
+          </div>
+          <div class="col-sm-5"><%= item.title %></div>
+          <div class="col-sm-2"><%= item.rating %></div>
+          <div class="col-sm-1"><%= "PH" %></div>
+    </div>
+    <hr>
+  <% end %>
